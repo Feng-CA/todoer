@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import LoginForm from './LoginForm'
 import Navigation from './Navigation'
 import TodoForm from './TodoForm'
@@ -8,13 +8,26 @@ import initialTodoList from '../data/todo-list.json'
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import About from './About'
 import NotFound from './NotFound'
+import { reducer } from '../utils/reducer'
 
 const App = () => {
-  const [loggedInUser, setLoggedInUser] = useState("");
-  const [todoList, setTodoList] = useState([]);
+  const initialState = {
+    todoList: [],
+    loggedInUser: ""
+  }
+
+  const [store, dispatch] = useReducer(reducer, initialState)
+  const {todoList, loggedInUser} = store
+
+  // const [loggedInUser, setLoggedInUser] = useState("");
+  // const [todoList, setTodoList] = useState([]);
 
   const activateUser = (username) => {
-    setLoggedInUser(username)
+    // setLoggedInUser(username)
+    dispatch({
+      type: "setLoggedInUser",
+      data: username
+    })
   }
 
   const addTodo = (text) => {
@@ -23,9 +36,13 @@ const App = () => {
       user: loggedInUser,
       id: todoList[0].id + 1 //nextId(todoList)
     }
-    setTodoList(
-      (todoList) => [todo, ...todoList]
-    )
+    // setTodoList(
+    //   (todoList) => [todo, ...todoList]
+    // )
+    dispatch({
+      type: "addTodo",
+      data: todo
+    })
   }
 
   // function nextId(data) {
@@ -38,7 +55,11 @@ const App = () => {
 
   useEffect(
     ()=>{
-      setTodoList(initialTodoList)
+      // setTodoList(initialTodoList)
+      dispatch({
+        type: "setTodoList",
+        data: initialTodoList
+      })
     },
     []
   )
