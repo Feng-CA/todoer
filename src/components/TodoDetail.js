@@ -1,6 +1,10 @@
 import { Link, useParams } from "react-router-dom";
+import { useGlobalState } from "../utils/stateContext";
 
-const TodoDetail = ({ todoList }) => {
+const TodoDetail = () => {
+  const {store} = useGlobalState();
+  const {todoList} = store;
+
   const params = useParams();
   console.log(params);
 

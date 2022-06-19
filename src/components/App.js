@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useReducer} from 'react'
 import LoginForm from './LoginForm'
 import Navigation from './Navigation'
 import TodoForm from './TodoForm'
@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-do
 import About from './About'
 import NotFound from './NotFound'
 import { reducer } from '../utils/reducer'
+import { StateContext } from '../utils/stateContext'
 
 const App = () => {
   const initialState = {
@@ -17,41 +18,7 @@ const App = () => {
   }
 
   const [store, dispatch] = useReducer(reducer, initialState)
-  const {todoList, loggedInUser} = store
-
-  // const [loggedInUser, setLoggedInUser] = useState("");
-  // const [todoList, setTodoList] = useState([]);
-
-  const activateUser = (username) => {
-    // setLoggedInUser(username)
-    dispatch({
-      type: "setLoggedInUser",
-      data: username
-    })
-  }
-
-  const addTodo = (text) => {
-    const todo = {
-      text: text,
-      user: loggedInUser,
-      id: todoList[0].id + 1 //nextId(todoList)
-    }
-    // setTodoList(
-    //   (todoList) => [todo, ...todoList]
-    // )
-    dispatch({
-      type: "addTodo",
-      data: todo
-    })
-  }
-
-  // function nextId(data) {
-  //   if(data.length === 0) return 1;
-
-  //   const sortData = data.sort((a, b) => a.id - b.id);
-  //   const nextId = sortData[sortData.length - 1].id + 1;
-  //   return nextId
-  // }
+  const {loggedInUser} = store
 
   useEffect(
     ()=>{
@@ -67,33 +34,30 @@ const App = () => {
 
   return (
     <div >
-          <h1>Todoer</h1>
-          {/* {!loggedInUser ?
-             <LoginForm activateUser={activateUser}/>
-             :
-             <TodoForm loggedInUser={loggedInUser} addTodo={addTodo}/>
-            }
-          <Todos todoList={todoList}/> */}
-
-          <Router>
-            <Navigation loggedInUser={loggedInUser} activateUser={activateUser}/>
-            <Routes>
-              <Route path="/" element={<Navigate to="todos" replace/>} />
-              <Route path="todos">
-                <Route index element={<Todos todoList={todoList}/>} />
-                <Route path="new" element={
-                  loggedInUser ?
-                    <TodoForm loggedInUser={loggedInUser} addTodo={addTodo}/>
-                  :
-                    <Navigate to="/login" />
-                } />
-                <Route path=":todoId" element={<TodoDetail todoList={todoList}/>} />
-              </Route>
-              <Route path="about" element={<About />} />
-              <Route path="login" element={<LoginForm activateUser={activateUser}/>} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Router>
+          <h1>Todoer</h1>          
+          {/* Wrap all the components that use global states like loggedInUser and todoList in the state context provider */}
+          <StateContext.Provider value={{store, dispatch}}>
+            {/* Wrap all the components involved in the App's routing */}
+            <Router>
+              <Navigation />
+              <Routes>
+                <Route path="/" element={<Navigate to="todos" replace/>} />
+                <Route path="todos">
+                  <Route index element={<Todos />} />
+                  <Route path="new" element={
+                    loggedInUser ?
+                      <TodoForm />
+                    :
+                      <Navigate to="/login" />
+                  } />
+                  <Route path=":todoId" element={<TodoDetail />} />
+                </Route>
+                <Route path="about" element={<About />} />
+                <Route path="login" element={<LoginForm />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Router>
+          </StateContext.Provider>
     </div>
   )
 }
