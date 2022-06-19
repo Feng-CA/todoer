@@ -1,7 +1,10 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useGlobalState } from "../utils/stateContext"
 
-const TodoForm = ({loggedInUser, addTodo}) => {
+const TodoForm = () => {
+    const {store, dispatch} = useGlobalState()
+    const {loggedInUser, todoList} = store
     const navigate = useNavigate()
 
     const initialFormData = {
@@ -33,6 +36,21 @@ const TodoForm = ({loggedInUser, addTodo}) => {
     const cleanText = () => {
         setFormData(initialFormData)
     }
+
+    const addTodo = (text) => {
+        const todo = {
+          id: todoList[0].id + 1, //nextId(todoList)
+          text: text,
+          user: loggedInUser
+        }
+        // setTodoList(
+        //   (todoList) => [todo, ...todoList]
+        // )
+        dispatch({
+          type: "addTodo",
+          data: todo
+        })
+      }
 
     return (
         <>

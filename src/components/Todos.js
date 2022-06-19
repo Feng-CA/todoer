@@ -1,6 +1,9 @@
+import { useGlobalState } from "../utils/stateContext"
 import Todo from "./Todo"
 
-const Todos = ({todoList}) => {
+const Todos = () => {
+    const {store} = useGlobalState()
+    const {todoList} = store
     return (
         <>
             {todoList.map(todo =>
