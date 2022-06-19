@@ -3,7 +3,11 @@ import LoginForm from './LoginForm'
 import Navigation from './Navigation'
 import TodoForm from './TodoForm'
 import Todos from './Todos'
+import TodoDetail from './TodoDetail'
 import initialTodoList from '../data/todo-list.json'
+import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
+import About from './About'
+import NotFound from './NotFound'
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState("");
@@ -17,11 +21,19 @@ const App = () => {
     const todo = {
       text: text,
       user: loggedInUser,
-      id: todoList[todoList.length - 1].id + 1
+      id: todoList[0].id + 1 //nextId(todoList)
     }
     setTodoList(
       (todoList) => [todo, ...todoList]
     )
+  }
+
+  function nextId(data) {
+    if(data.length === 0) return 1;
+
+    const sortData = data.sort((a, b) => a.id - b.id);
+    const nextId = sortData[sortData.length - 1].id + 1;
+    return nextId
   }
 
   useEffect(
@@ -30,16 +42,37 @@ const App = () => {
     },
     []
   )
+
+
   return (
     <div >
           <h1>Todoer</h1>
-          <Navigation loggedInUser={loggedInUser} activateUser={activateUser}/>
-          {!loggedInUser ?
+          {/* {!loggedInUser ?
              <LoginForm activateUser={activateUser}/>
              :
              <TodoForm loggedInUser={loggedInUser} addTodo={addTodo}/>
-          }
-          <Todos todoList={todoList}/>
+            }
+          <Todos todoList={todoList}/> */}
+
+          <Router>
+            <Navigation loggedInUser={loggedInUser} activateUser={activateUser}/>
+            <Routes>
+              <Route path="/" element={<Navigate to="todos" replace/>} />
+              <Route path="todos">
+                <Route index element={<Todos todoList={todoList}/>} />
+                <Route path="new" element={
+                  loggedInUser ?
+                    <TodoForm loggedInUser={loggedInUser} addTodo={addTodo}/>
+                  :
+                    <Navigate to="/login" />
+                } />
+                <Route path=":todoId" element={<TodoDetail todoList={todoList}/>} />
+              </Route>
+              <Route path="about" element={<About />} />
+              <Route path="login" element={<LoginForm activateUser={activateUser}/>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
     </div>
   )
 }

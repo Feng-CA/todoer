@@ -1,6 +1,9 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const TodoForm = ({loggedInUser, addTodo}) => {
+    const navigate = useNavigate()
+
     const initialFormData = {
         "text": ""
     }
@@ -23,6 +26,7 @@ const TodoForm = ({loggedInUser, addTodo}) => {
             console.log(formData)
             addTodo(formData.text)
             cleanText()
+            navigate("/todos")
         }
     }
     

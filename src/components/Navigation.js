@@ -1,23 +1,29 @@
+import { Link, useNavigate } from "react-router-dom";
+
 const Navigation = ({loggedInUser, activateUser}) => {
+
+    const navigate = useNavigate()
     const logout = (e) => {
         e.preventDefault();
         activateUser("")
+        navigate("/todos")
     }
 
     return (
         <nav>
-            <a href="/">Home</a>
-            <a href="/">About</a>
+            <Link to="/todos">Home</Link>
+            <Link to="/about">About</Link>
             { loggedInUser ?
                 <>
+                    <Link to="/todos/new">New todo</Link>
                     {loggedInUser}
-                    <a href="/" onClick={logout}>Logout</a>
+                    <Link to="/todos" onClick={logout}>Logout</Link>
                 </>
                 :
                 <>
                     Guest
-                    <a href="/">Login</a>
-                    <a href="/">Sign Up</a>
+                    <Link to="/login">Login</Link>
+                    <Link to="/login">Sign Up</Link>
                 </>
             }
         </nav>
