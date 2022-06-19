@@ -28,13 +28,13 @@ const App = () => {
     )
   }
 
-  function nextId(data) {
-    if(data.length === 0) return 1;
+  // function nextId(data) {
+  //   if(data.length === 0) return 1;
 
-    const sortData = data.sort((a, b) => a.id - b.id);
-    const nextId = sortData[sortData.length - 1].id + 1;
-    return nextId
-  }
+  //   const sortData = data.sort((a, b) => a.id - b.id);
+  //   const nextId = sortData[sortData.length - 1].id + 1;
+  //   return nextId
+  // }
 
   useEffect(
     ()=>{
