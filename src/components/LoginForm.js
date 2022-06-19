@@ -1,0 +1,48 @@
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+
+const LoginForm = ({activateUser}) => {
+    const navigate = useNavigate()
+
+    const initialFormData = {
+        user: "",
+        password: ""
+    }
+    const [formData, setFormData] = useState(initialFormData)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log("You clicked submit")
+        console.log(formData)
+        activateUser(formData.user)
+        setFormData(initialFormData)
+        navigate("/todos")
+    }
+
+    const handleFormData = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value
+        })
+    }
+
+    return (
+
+        <>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Username:</label>
+                    <input type="text" name="user" id="user" value={formData.user} onChange={handleFormData} />
+                    
+                </div>
+                <div>
+                    <label htmlFor="password">Password:</label>
+                    <input type="password" name="password" id="password" value={formData.password} onChange={handleFormData}/>
+                </div>
+                <input type="submit" value="Login"/>
+            </form>
+        </>
+    )
+}
+
+export default LoginForm
