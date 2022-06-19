@@ -1,6 +1,6 @@
 [
-    {"text": "Every saturday we clean the house.", "user": "Amanda"},
-    {"text": "Every sunday we do the shopping.", "user": "Michael"},
-    {"text": "Every wednesday afternoon I have an extra class.", "user": "Matt"},
-    {"text": "Every night I have a reading book record.", "user": "Mel"}
+    {"id": "1", "text": "Every saturday we clean the house.", "user": "Amanda"},
+    {"id": "2", "text": "Every sunday we do the shopping.", "user": "Michael"},
+    {"id": "3", "text": "Every wednesday afternoon I have an extra class.", "user": "Matt"},
+    {"id": "4", "text": "Every night I have a reading book record.", "user": "Mel"}
 ]

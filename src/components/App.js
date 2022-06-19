@@ -24,7 +24,7 @@ const App = () => {
           <h1>Todoer</h1>
           <Navigation loggedInUser={loggedInUser} activateUser={activateUser}/>
           {!loggedInUser && <LoginForm activateUser={activateUser}/>}
-          <TodoForm />
+          <TodoForm loggedInUser={loggedInUser}/>
           <Todos todoList={todoList}/>
     </div>
   )
