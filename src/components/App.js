@@ -10,6 +10,7 @@ import About from './About'
 import NotFound from './NotFound'
 import { reducer } from '../utils/reducer'
 import { StateContext } from '../utils/stateContext'
+// import axios from 'axios'
 
 const App = () => {
   const initialState = {
@@ -22,6 +23,17 @@ const App = () => {
 
   useEffect(
     ()=>{
+      // fetch("http://localhost:4000/todos")
+      // .then(response => response.json())
+      // .then(data => console.log(data))
+    //   axios.get("http://localhost:4000/todos")
+    //   .then(response => {console.log(response.data)
+    //   dispatch({
+    //     type: "setTodoList",
+    //     data: response.data
+    //   })
+    // })
+
       // setTodoList(initialTodoList)
       dispatch({
         type: "setTodoList",
