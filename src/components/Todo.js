@@ -1,12 +1,16 @@
+import { Card, CardContent, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
 
 const Todo = ({todo}) => {
     return (
-        <>
-            <h4>{todo.text}</h4>
-            <p>{todo.user}</p>
-            <Link to={`${todo.id}`}>View detail</Link>
-        </>
+        <Link to={`${todo.id}`} style={{textDecoration: 'none'}}>
+            <Card>
+                <CardContent>
+                    <Typography variant='h5'>{todo.text}</Typography>
+                    <Typography variant='p'>{todo.user}</Typography>
+                </CardContent>
+            </Card>
+        </Link>
     )
 }
 

@@ -1,3 +1,4 @@
+import { Button } from "@mui/material"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useGlobalState } from "../utils/stateContext"
@@ -59,8 +60,9 @@ const TodoForm = () => {
                 <div>
                     <textarea type="text" name="text" id="text" placeholder={`What's your next todo ${loggedInUser}?`} value={formData.text} onChange={handleFormData}></textarea>
                 </div>
-                <input type="submit" value="post"/>
-                <button onClick={cleanText}>Clean text</button>
+            
+                <Button variant="contained" type="submit">Post todo</Button>
+                <Button variant="contained" onClick={cleanText}>Clean todo</Button>
             </form>
         </>
     )

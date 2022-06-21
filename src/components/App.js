@@ -46,7 +46,7 @@ const App = () => {
 
   return (
     <div >
-          <h1>Todoer</h1>          
+          {/* <Typography variant='h3'>Todoer</Typography>           */}
           {/* Wrap all the components that use global states like loggedInUser and todoList in the state context provider */}
           <StateContext.Provider value={{store, dispatch}}>
             {/* Wrap all the components involved in the App's routing */}

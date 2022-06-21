@@ -1,3 +1,4 @@
+import { Card, CardContent, Typography } from "@mui/material"
 import { Link, useParams } from "react-router-dom";
 import { useGlobalState } from "../utils/stateContext";
 
@@ -16,13 +17,15 @@ const TodoDetail = () => {
   return (
     <>
       {todo ? (
-        <>
-          <h4>{todo.text}</h4>
-          <p>{todo.user}</p>
-        </>
+        <Card>
+          <CardContent>
+              <Typography variant='h5'>{todo.text}</Typography>
+              <Typography variant='p'>{todo.user}</Typography>
+          </CardContent>
+        </Card>
       ) : (
         <>
-            <p>Todo not found</p>
+            <Typography variant='h5'>Todo not found</Typography>
             <Link to="/todos">Go back to the main page</Link>
         </>
       )}
