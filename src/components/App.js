@@ -4,18 +4,19 @@ import Navigation from './Navigation'
 import TodoForm from './TodoForm'
 import Todos from './Todos'
 import TodoDetail from './TodoDetail'
-import initialTodoList from '../data/todo-list.json'
+import SignupForm from './SignupForm'
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import About from './About'
 import NotFound from './NotFound'
 import { reducer } from '../utils/reducer'
 import { StateContext } from '../utils/stateContext'
-// import axios from 'axios'
+import { getTodos } from '../services/todosServices'
 
 const App = () => {
   const initialState = {
     todoList: [],
-    loggedInUser: ""
+    loggedInUser: sessionStorage.getItem("username") || null,
+    token: sessionStorage.getItem("token") || null
   }
 
   const [store, dispatch] = useReducer(reducer, initialState)
@@ -33,12 +34,15 @@ const App = () => {
     //     data: response.data
     //   })
     // })
-
-      // setTodoList(initialTodoList)
-      dispatch({
-        type: "setTodoList",
-        data: initialTodoList
+      getTodos()
+      .then(todos => {
+        dispatch({
+          type: "setTodoList",
+          data: todos
+        })
       })
+      .catch(e => {console.log(e)})
+      // setTodoList(initialTodoList)
     },
     []
   )
@@ -66,6 +70,7 @@ const App = () => {
                 </Route>
                 <Route path="about" element={<About />} />
                 <Route path="login" element={<LoginForm />} />
+                <Route path="signup" element={<SignupForm />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Router>

@@ -1,56 +1,81 @@
-import { Button, InputLabel, TextField } from "@mui/material"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { useGlobalState } from "../utils/stateContext"
+import { Button, InputLabel, TextField, Typography } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { signIn } from "../services/authServices";
+import { useGlobalState } from "../utils/stateContext";
 
 const LoginForm = () => {
-    const {dispatch} = useGlobalState()
-    const navigate = useNavigate()
+  const { dispatch } = useGlobalState();
+  const navigate = useNavigate();
 
-    const initialFormData = {
-        user: "",
-        password: ""
-    }
-    const [formData, setFormData] = useState(initialFormData)
+  const initialFormData = {
+    email: "",
+    password: "",
+  };
+  const [formData, setFormData] = useState(initialFormData);
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log("You clicked submit")
-        console.log(formData)
-        // activateUser(formData.user)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log("You clicked submit");
+    // console.log(formData);
+    // activateUser(formData.user)
+    signIn(formData)
+      .then(({ username, jwt }) => {
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("token", jwt);
         dispatch({
-            type: "setLoggedInUser",
-            data: formData.user
-          })
-        setFormData(initialFormData)
-        navigate("/todos")
-    }
+          type: "setLoggedInUser",
+          data: username,
+        });
+        dispatch({
+          type: "setToken",
+          data: jwt,
+        });
+      })
+      .catch((e) => console.log(e));
 
-    const handleFormData = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.id]: e.target.value
-        })
-    }
+    setFormData(initialFormData);
+    navigate("/todos");
+  };
 
-    return (
+  const handleFormData = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
 
-        <>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <InputLabel>Username:</InputLabel>
-                    <TextField type="text" name="user" id="user" value={formData.user} onChange={handleFormData} />
-                    
-                </div>
-                <div>
-                    <InputLabel htmlFor="password">Password:</InputLabel>
-                    <TextField type="password" name="password" id="password" value={formData.password} onChange={handleFormData}/>
-                </div>
-                {/* <input type="submit" value="Login"/> */}
-                <Button variant="contained" type="submit">Login</Button>
-            </form>
-        </>
-    )
-}
+  return (
+    <>
+      <Typography variant="h4">Log in user</Typography>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <InputLabel>Email:</InputLabel>
+          <TextField
+            type="text"
+            name="email"
+            id="email"
+            value={formData.email}
+            onChange={handleFormData}
+          />
+        </div>
+        <div>
+          <InputLabel htmlFor="password">Password:</InputLabel>
+          <TextField
+            type="password"
+            name="password"
+            id="password"
+            value={formData.password}
+            onChange={handleFormData}
+          />
+        </div>
+        {/* <input type="submit" value="Login"/> */}
+        <Button variant="contained" type="submit">
+          Login
+        </Button>
+      </form>
+    </>
+  );
+};
 
-export default LoginForm
+export default LoginForm;

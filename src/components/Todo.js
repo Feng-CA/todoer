@@ -7,7 +7,8 @@ const Todo = ({todo}) => {
             <Card>
                 <CardContent>
                     <Typography variant='h5'>{todo.text}</Typography>
-                    <Typography variant='p'>{todo.user}</Typography>
+                    <Typography variant='p'>{todo.username}</Typography>
+                    <Typography variant='p'>{todo.posted}</Typography>
                 </CardContent>
             </Card>
         </Link>

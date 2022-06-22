@@ -2,10 +2,11 @@ import { Button } from "@mui/material"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useGlobalState } from "../utils/stateContext"
+import { createTodo } from "../services/todosServices"
 
 const TodoForm = () => {
     const {store, dispatch} = useGlobalState()
-    const {loggedInUser, todoList} = store
+    const {loggedInUser} = store
     const navigate = useNavigate()
 
     const initialFormData = {
@@ -27,8 +28,9 @@ const TodoForm = () => {
             console.log("empty text")
         }else {
             console.log("You clicked new todo submit")
+            console.log(loggedInUser)
             console.log(formData)
-            addTodo(formData.text)
+            addTodo(formData)
             cleanText()
             navigate("/todos")
         }
@@ -38,20 +40,16 @@ const TodoForm = () => {
         setFormData(initialFormData)
     }
 
-    const addTodo = (text) => {
-        const todo = {
-          id: todoList[0].id + 1, //nextId(todoList)
-          text: text,
-          user: loggedInUser
-        }
-        // setTodoList(
-        //   (todoList) => [todo, ...todoList]
-        // )
-        dispatch({
-          type: "addTodo",
-          data: todo
+    const addTodo = (data) => {
+      
+        createTodo(data)
+        .then(todo => {
+            dispatch({
+              type: "addTodo",
+              data: todo
+            })
         })
-      }
+    }
 
     return (
         <>

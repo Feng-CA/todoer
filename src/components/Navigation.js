@@ -9,10 +9,15 @@ const Navigation = () => {
     const navigate = useNavigate()
     const logout = (e) => {
         e.preventDefault();
+        sessionStorage.clear()
         dispatch({
             type: "setLoggedInUser",
-            data: ""
-          })
+            data: null
+        })
+        dispatch({
+            type: "setToken",
+            data: null
+        })
         navigate("/todos")
     }
 
@@ -26,7 +31,7 @@ const Navigation = () => {
                     { loggedInUser && <Tab label="New todo" component={Link} to="/todos/new" />}
                     { loggedInUser && <Tab label="Logout" onClick={logout} component={Link} to="/todos" />}
                     { !loggedInUser && <Tab label="Login" component={Link} to="/login" />}
-                    { !loggedInUser && <Tab label="Signup" component={Link} to="/login" />}
+                    { !loggedInUser && <Tab label="Signup" component={Link} to="/signup" />}
                 </Tabs>
             </Toolbar>  
         </AppBar>
